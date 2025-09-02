@@ -1,0 +1,15 @@
+# Bỏ qua các thư mục
+/node_modules
+/dist
+/build
+
+# Bỏ qua các tệp tạm và log
+*.log
+*.tmp
+.cache
+
+# Bỏ qua các tệp cấu hình nhạy cảm
+.env
+
+# Bỏ qua các tệp hệ thống
+.DS_Store

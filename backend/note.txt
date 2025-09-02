@@ -1,0 +1,18 @@
+
+src/config: Chứa các file cấu hình cho toàn bộ ứng dụng, như kết nối database, các biến môi trường (PORT, JWT_SECRET, ...).
+
+src/models: Đây là nơi chúng ta sẽ định nghĩa các Mongoose Schema dựa trên file airbnb_erd.md. Mỗi file tương ứng với một collection trong MongoDB.
+
+src/services: Tách biệt business logic (logic nghiệp vụ) ra khỏi controllers. Ví dụ: logic tạo người dùng, kiểm tra mật khẩu, tạo một booking... sẽ nằm ở đây. Điều này giúp controllers gọn gàng và logic dễ dàng được tái sử dụng.
+
+src/controllers: Nhận request từ client, gọi đến các services tương ứng để xử lý, và trả response về cho client. Controller không nên chứa business logic phức tạp.
+
+src/routes: Định nghĩa các API endpoints (ví dụ: GET /api/v1/listings, POST /api/v1/auth/login). Nó sẽ liên kết một endpoint với một hàm trong controller.
+
+src/middlewares: Chứa các hàm sẽ chạy trước khi request đến được controller, dùng cho các tác vụ như xác thực người dùng, kiểm tra quyền, validate dữ liệu...
+
+src/utils: Chứa các hàm tiện ích nhỏ, có thể tái sử dụng ở nhiều nơi trong dự án.
+
+app.js: File trung tâm để "lắp ráp" ứng dụng: gắn các middleware (cors, helmet, body-parser), kết nối các routes...
+
+index.js: File đơn giản nhất, chỉ có nhiệm vụ khởi động server và lắng nghe trên một port.
