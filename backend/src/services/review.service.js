@@ -1,3 +1,6 @@
+// review.service.js
+// TODO: In a real app, check if the user has a completed booking for this listing.
+
 const httpStatus = require('http-status');
 const { Review, Listing } = require('../models');
 const ApiError = require('../utils/ApiError');

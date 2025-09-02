@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const toJSON = require('../plugins/toJSON.plugin');
 const paginate = require('../plugins/paginate.plugin');
 const aggregatePaginate = require('../plugins/aggregatePaginate.plugin');
+const Listing = require('./listing.model');
 
 const reviewSchema = new mongoose.Schema(
     {
@@ -46,8 +47,13 @@ reviewSchema.statics.calculateStats = async function (listingId) {
         },
     ]);
 
-    const update = stats.length > 0 ? { totalReviews: stats[0].totalReviews, avgRating: stats[0].avgRating.toFixed(2) } : { totalReviews: 0, avgRating: 0 };
-    await mongoose.model('Listing').findByIdAndUpdate(listingId, update);
+    const update =
+        stats.length > 0
+            ? { totalReviews: stats[0].totalReviews, avgRating: Math.round(stats[0].avgRating * 100) / 100 } // Round to 2 decimal places as a number
+            : { totalReviews: 0, avgRating: 0 };
+
+    // Use the imported Listing model
+    await Listing.findByIdAndUpdate(listingId, update);
 };
 
 // Middleware to update stats after a new review is saved or deleted
