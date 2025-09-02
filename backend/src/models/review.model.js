@@ -16,8 +16,12 @@ const reviewSchema = new mongoose.Schema(
             ref: 'User',
             required: true,
         },
-        // In a real-world scenario, you'd also have a bookingId to ensure only users who completed a stay can review.
-        // bookingId: { type: mongoose.Schema.Types.ObjectId, ref: 'Booking', required: true },
+        bookingId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Booking',
+            required: true,
+            unique: true, // A booking can only be reviewed once
+        },
         rating: {
             type: Number,
             required: true,

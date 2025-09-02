@@ -9,7 +9,7 @@
 .cache
 
 # Bỏ qua các tệp cấu hình nhạy cảm
-.env
+# .env
 
 # Bỏ qua các tệp hệ thống
 .DS_Store

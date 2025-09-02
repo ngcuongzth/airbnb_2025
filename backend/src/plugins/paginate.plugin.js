@@ -35,9 +35,14 @@ const paginate = (schema) => {
         const skip = (page - 1) * limit;
 
         const countPromise = this.countDocuments(filter).exec();
-        const docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit).exec();
+        let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit);
 
-        return Promise.all([countPromise, docsPromise]).then((values) => {
+        // Handle population
+        if (options.populate) {
+            docsPromise = docsPromise.populate(options.populate);
+        }
+
+        return Promise.all([countPromise, docsPromise.exec()]).then((values) => {
             const [totalResults, results] = values;
             const totalPages = Math.ceil(totalResults / limit);
             return {

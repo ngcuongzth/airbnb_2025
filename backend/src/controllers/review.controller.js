@@ -5,7 +5,7 @@ const { reviewService } = require('../services');
 const pick = require('../utils/pick');
 
 const createReview = catchAsync(async (req, res) => {
-    const reviewBody = { ...req.body, guestId: req.user.id, listingId: req.params.listingId };
+    const reviewBody = { ...req.body, guestId: req.user.id };
     const review = await reviewService.createReview(reviewBody);
     res.status(httpStatus.CREATED).send(review);
 });

@@ -4,6 +4,8 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const listingRoute = require('./listing.route');
+const { topLevelRouter: bookingRoute } = require('./booking.route');
+const { reviewRouter } = require('./review.route');
 
 
 const router = express.Router();
@@ -20,6 +22,14 @@ const defaultRoutes = [
     {
         path: '/listings',
         route: listingRoute,
+    },
+    {
+        path: '/bookings',
+        route: bookingRoute,
+    },
+    {
+        path: '/reviews',
+        route: reviewRouter,
     },
 ];
 

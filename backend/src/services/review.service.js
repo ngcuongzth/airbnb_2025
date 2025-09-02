@@ -2,7 +2,7 @@
 // TODO: In a real app, check if the user has a completed booking for this listing.
 
 const httpStatus = require('http-status');
-const { Review, Listing } = require('../models');
+const { Review, Booking } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -11,12 +11,24 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Review>}
  */
 const createReview = async (reviewBody) => {
-    const listing = await Listing.findById(reviewBody.listingId);
-    if (!listing) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Listing not found');
+    const { bookingId, guestId } = reviewBody;
+    const booking = await Booking.findById(bookingId);
+    if (!booking) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Booking not found');
     }
-    // TODO: In a real app, check if the user has a completed booking for this listing.
-    return Review.create(reviewBody);
+    if (!booking.guestId.equals(guestId)) {
+        throw new ApiError(httpStatus.FORBIDDEN, 'You can only review your own bookings');
+    }
+
+    if (booking.status !== 'confirmed' && booking.status !== 'completed') {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'You can only review confirmed or completed bookings');
+    }
+
+    if (new Date(booking.checkOut) > new Date()) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'You can only review a booking after the check-out date');
+    }
+
+    return Review.create({ ...reviewBody, listingId: booking.listingId });
 };
 
 /**

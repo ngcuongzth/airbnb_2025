@@ -4,9 +4,14 @@ const validate = require('../middlewares/validate.middleware');
 const { reviewValidation } = require('../validations');
 const { reviewController } = require('../controllers');
 
-const router = express.Router({ mergeParams: true }); // Important: mergeParams allows access to :listingId
+const router = express.Router();
 
-router.route('/').post(auth(), validate(reviewValidation.createReview), reviewController.createReview).get(validate(reviewValidation.getReviews), reviewController.getReviews);
+// This route is now a top-level route for creating reviews
+router.route('/').post(auth(), validate(reviewValidation.createReview), reviewController.createReview);
 
-module.exports = router;
+// We will create a separate router for getting reviews for a listing to keep things clean
+const listingReviewsRouter = express.Router({ mergeParams: true });
+listingReviewsRouter.route('/').get(validate(reviewValidation.getReviews), reviewController.getReviews);
+
+module.exports = { reviewRouter: router, listingReviewsRouter };
 

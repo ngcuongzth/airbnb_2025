@@ -16,18 +16,7 @@ const createListing = async (listingBody) => {
     return Listing.create({ ...listingBody, status: 'active' });
 };
 
-/**
- * Get listing by id
- * @param {mongoose.ObjectId} id
- * @returns {Promise<Listing>}
- */
-const getListingById = async (id) => {
-    const listing = await Listing.findById(id);
-    if (!listing) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Listing not found');
-    }
-    return listing;
-};
+
 
 /**
  * Query for listings with advanced filtering and pagination
@@ -134,6 +123,20 @@ const queryListings = async (filterOptions, paginateOptions) => {
 };
 
 
+
+/**
+ * Get listing by id
+ * @param {mongoose.ObjectId} id
+ * @returns {Promise<Listing>}
+ */
+const getListingById = async (id) => {
+    const listing = await Listing.findById(id);
+    if (!listing) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Listing not found');
+    }
+    return listing;
+};
+
 /**
  * Update listing by id
  * @param {mongoose.ObjectId} listingId
@@ -172,6 +175,7 @@ const deleteListingById = async (listingId, userId) => {
 
     await listing.deleteOne();
 };
+
 
 module.exports = {
     createListing,
